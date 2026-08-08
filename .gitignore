@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated from WORLD.md by scripts/build-world.ts
+lib/ai/world.generated.ts
+
+# probe harness
+.probe-latency.json
+/fixtures
