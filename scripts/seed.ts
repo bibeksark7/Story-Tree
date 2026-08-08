@@ -62,8 +62,56 @@ function parseTrunk(md: string): Passage[] {
   return passages;
 }
 
+/**
+ * Update the prose and choices of the already-seeded trunk in place, matching
+ * passages to nodes by walking the same heap structure the seed used.
+ *
+ * This exists because editing content/trunk.md after seeding otherwise means
+ * --reset, which deletes the whole tree — including contributed branches that
+ * cannot be regenerated. A wording fix should not cost anyone their object.
+ */
+async function refresh(passages: Passage[]): Promise<void> {
+  const root = await db.from("nodes").select("id").is("parent_id", null).order("created_at").limit(1).maybeSingle();
+  if (root.error || !root.data) throw new Error("No root node to refresh. Seed first.");
+
+  const idByIndex = new Map<number, string>([[1, root.data.id]]);
+
+  for (const p of passages) {
+    if (!idByIndex.has(p.index)) {
+      const rel = parentOf(p.index)!;
+      const parentId = idByIndex.get(rel.parentIndex);
+      if (!parentId) {
+        console.log(`passage ${p.index}: no matching node in the tree, skipped`);
+        continue;
+      }
+      const kid = await db
+        .from("nodes")
+        .select("id")
+        .eq("parent_id", parentId)
+        .eq("slot_index", rel.slotIndex)
+        .maybeSingle();
+      if (!kid.data) {
+        console.log(`passage ${p.index}: no matching node in the tree, skipped`);
+        continue;
+      }
+      idByIndex.set(p.index, kid.data.id);
+    }
+
+    const id = idByIndex.get(p.index)!;
+    const { error } = await db
+      .from("nodes")
+      .update({ prose: p.prose, pending_choices: p.choices })
+      .eq("id", id);
+    if (error) throw new Error(`refresh passage ${p.index}: ${error.message}`);
+    console.log(`passage ${p.index}  ${id}  updated (${p.prose.split(/\s+/).length} words)`);
+  }
+
+  console.log("\nTrunk text refreshed. The rest of the tree is untouched.\n");
+}
+
 async function main() {
   const reset = process.argv.includes("--reset");
+  const isRefresh = process.argv.includes("--refresh");
 
   const md = readFileSync(resolve("content/trunk.md"), "utf8");
   const passages = parseTrunk(md);
@@ -71,13 +119,18 @@ async function main() {
   if (passages.length === 0) throw new Error("No passages found in content/trunk.md");
   if (passages[0].index !== 1) throw new Error("content/trunk.md must start at passage 1");
 
+  if (isRefresh) {
+    await refresh(passages);
+    return;
+  }
+
   const { count } = await db.from("nodes").select("id", { count: "exact", head: false }).limit(1);
   if ((count ?? 0) > 0) {
     if (!reset) {
       console.error(
         `\nRefusing to seed: ${count} node(s) already exist.\n` +
-          `Re-run with --reset to delete the whole tree first.\n` +
-          `(This deletes generated branches too, not just the trunk.)\n`,
+          `  --refresh  update the trunk's wording in place, keeping the tree\n` +
+          `  --reset    delete the whole tree and start over (loses contributed branches)\n`,
       );
       process.exit(1);
     }
