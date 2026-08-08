@@ -12,6 +12,7 @@
     "preprobe": "tsx scripts/build-world.ts",
     "probe": "tsx --env-file=.env.local scripts/probe.ts",
     "seed": "tsx --env-file=.env.local scripts/seed.ts",
+    "hide": "tsx --env-file=.env.local scripts/hide.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

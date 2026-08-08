@@ -1,26 +1,94 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Manila catalogue-card stock, iron-gall ink, and the dull oxblood of a
+     rubber stamp. The interface is the building's ledger, not the building. */
+  --color-paper: #d9d1be;
+  --color-paper-lit: #e3dccc;
+  --color-paper-deep: #c6bba3;
+  --color-ink: #221f1a;
+  --color-ink-soft: #5f574a;
+  --color-ink-faint: #8b8272;
+  --color-stamp: #7a2e26;
+
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --font-label: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: #b9ad93;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  /* Card-table felt: a flat ground so the card reads as a physical object. */
+  background-color: #b9ad93;
+  background-image:
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.16), transparent 42%),
+    radial-gradient(circle at 82% 88%, rgba(34, 31, 26, 0.14), transparent 46%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Paper fibre. Two cheap gradients, no image request. */
+.card-stock {
+  background-color: var(--color-paper);
+  background-image:
+    repeating-linear-gradient(
+      92deg,
+      rgba(34, 31, 26, 0.022) 0px,
+      rgba(34, 31, 26, 0.022) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    repeating-linear-gradient(
+      2deg,
+      rgba(255, 255, 255, 0.05) 0px,
+      rgba(255, 255, 255, 0.05) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+}
+
+.label {
+  font-family: var(--font-label);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.6875rem;
+  color: var(--color-ink-faint);
+}
+
+/* The card settles onto the table on load. */
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.settle {
+  animation: settle 480ms cubic-bezier(0.22, 0.68, 0.35, 1) both;
+}
+
+@keyframes ink-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.ink-in {
+  animation: ink-in 340ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settle,
+  .ink-in {
+    animation: none;
+  }
 }

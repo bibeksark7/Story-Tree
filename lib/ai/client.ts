@@ -1,6 +1,14 @@
 import Anthropic from "@anthropic-ai/sdk";
 
-export const anthropic = new Anthropic();
+/**
+ * Timeouts are in milliseconds in this SDK. The default is 10 minutes, which
+ * on stage means a judge watching a spinner forever. A generation that has not
+ * answered in 20s is not going to answer usefully.
+ *
+ * maxRetries 1 rather than the default 2: a second retry costs more wall-clock
+ * than the demo can spend.
+ */
+export const anthropic = new Anthropic({ timeout: 20_000, maxRetries: 1 });
 
 // Every model choice in the app lives here. Env overrides make the latency
 // escape hatch a config change rather than a deploy — set them in .env.local
