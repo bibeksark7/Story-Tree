@@ -35,6 +35,17 @@ export async function insertObject(
   return data as ObjectRow;
 }
 
+export async function getObject(id: string): Promise<ObjectRow | null> {
+  const { data, error } = await db
+    .from("objects")
+    .select("*")
+    .eq("id", id)
+    .eq("is_hidden", false)
+    .maybeSingle();
+  if (error) throw new Error(`getObject: ${error.message}`);
+  return data as ObjectRow | null;
+}
+
 /**
  * Pick an object that has not already appeared on this branch.
  *

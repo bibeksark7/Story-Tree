@@ -91,16 +91,16 @@ export function CameraCapture({ parentId }: { parentId: string }) {
       <label
         htmlFor="photo"
         aria-disabled={state === "working"}
-        className={`block w-full rounded-sm border px-5 py-5 text-center text-base transition-colors ${
+        className={`block w-full border border-dashed px-5 py-6 text-center text-[1.0625rem] transition-colors ${
           state === "working"
-            ? "cursor-wait border-neutral-700 text-neutral-500"
-            : "cursor-pointer border-amber-700/60 text-amber-200 hover:border-amber-500 hover:bg-amber-950/30"
+            ? "cursor-wait border-paper-deep text-ink-faint"
+            : "cursor-pointer border-stamp/45 text-stamp hover:bg-stamp/[0.06]"
         }`}
       >
-        {state === "working" ? "Adding it to the inventory…" : "Photograph the object"}
+        {state === "working" ? "Entering it in the inventory…" : "Photograph the object"}
       </label>
 
-      {message && <p className="text-sm text-amber-500/80">{message}</p>}
+      {message && <p className="font-label text-[0.8125rem] text-stamp">{message}</p>}
     </div>
   );
 }
