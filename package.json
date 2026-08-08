@@ -9,6 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "preprobe": "tsx scripts/build-world.ts",
     "probe": "tsx --env-file=.env.local scripts/probe.ts",
     "typecheck": "tsc --noEmit"
   },
