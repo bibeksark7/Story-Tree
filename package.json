@@ -11,6 +11,7 @@
     "lint": "eslint",
     "preprobe": "tsx scripts/build-world.ts",
     "probe": "tsx --env-file=.env.local scripts/probe.ts",
+    "seed": "tsx --env-file=.env.local scripts/seed.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
