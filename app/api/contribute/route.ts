@@ -3,6 +3,7 @@ import { getNode, insertContribution } from "@/lib/db/nodes";
 import { insertObject } from "@/lib/db/objects";
 import { extractObject, type ImageMediaType } from "@/lib/ai/extract";
 import { narrate } from "@/lib/ai/narrate";
+import { screenProse } from "@/lib/ai/screen";
 import { MOOD_BUCKET } from "@/lib/art/manifest";
 import { invalidateCanon } from "@/lib/canon";
 import {
@@ -60,6 +61,8 @@ export async function POST(request: NextRequest) {
       object: extraction.object,
       leakObject: null,
     });
+
+    await screenProse(narration.prose);
 
     // The illustration now follows the object rather than the parent — the
     // visual signal that someone left something here. Store the manifest key;

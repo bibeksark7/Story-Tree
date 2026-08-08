@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { getNode, getChildren, getAncestors, insertChild } from "@/lib/db/nodes";
 import { pickLeakObject } from "@/lib/db/objects";
 import { narrate } from "@/lib/ai/narrate";
+import { screenProse } from "@/lib/ai/screen";
 import { invalidateCanon } from "@/lib/canon";
 import type { StoryObject } from "@/lib/ai/schemas";
 import { GuardError, enforceDepthCap, enforceRateLimit, guardResponse, hashIp } from "@/lib/guard";
@@ -71,6 +72,8 @@ export async function POST(request: NextRequest) {
       object: null,
       leakObject,
     });
+
+    await screenProse(narration.prose);
 
     // A text-only child is the same place one step later, so it inherits the
     // parent's illustration. When an object is contributed (Phase 3) the art
