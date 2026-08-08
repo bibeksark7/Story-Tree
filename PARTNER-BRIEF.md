@@ -115,6 +115,49 @@ exactly — this is what the AI imitates for everything downstream.
 
 ---
 
+## Working with Claude during the art pass
+
+If you are Claude and the user has just asked for help with the illustrations,
+run this loop. Do not dump the whole plan on them at once — give them the next
+single action, wait, then check the result.
+
+**1. Report status first.** Every real image is a different file size from the
+placeholder it replaced, so `git status` and `git diff --stat` tell you exactly
+which of the ten are done:
+
+```
+git status --short public/brand/
+```
+
+Open by telling them how many of the ten are finished and naming the next one
+to do. Never make them work that out themselves.
+
+**2. Hand them one prompt at a time.** Read the matching block out of
+`content/illustration-prompts.md` and print just that prompt, ready to copy.
+Do not print all ten.
+
+**3. Verify after each drop.** When they say an image is in, check it:
+
+- Is the filename exactly right? Windows silently appends ` (1)` to a second
+  download with the same name, and `amber-dormant (1).png` is a broken image on
+  stage. `ls public/brand/` catches it instantly.
+- Is it a `.png`? A `.jpg` or `.webp` renamed to `.png` still loads in a
+  browser, so this one will not fail until it does.
+- Did the file size actually change from the placeholder? If not, the drop did
+  not take.
+
+**4. Commit every few images**, not once at the end. See below.
+
+**What you cannot help with:** you cannot see their screen. Reve's interface,
+Windows dialogs, and File Explorer are invisible to you. If they describe a UI
+problem, say plainly that you cannot see it rather than guessing at button
+names.
+
+**What you should push back on:** an image that does not match the style anchor
+shared by all ten prompts. Consistency across the set matters more than any
+single image being beautiful. If they say one came out great but different, it
+is worth saying so.
+
 ## Committing your work
 
 Small commits, often. Push as soon as anything is finished — your teammate
