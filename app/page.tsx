@@ -1,35 +1,22 @@
-// Phase 0 only. Replaced in Phase 1 by the canon entry resolver.
-import { readFileSync } from "node:fs";
-import { db } from "@/lib/supabase";
+import { redirect } from "next/navigation";
+import { canonEntry } from "@/lib/canon";
 
+// Canon shifts as people read. Never serve a cached entry point.
 export const dynamic = "force-dynamic";
 
-async function nodeCount(): Promise<string> {
-  // Deliberately not `head: true`: that swallows a 404 and reports a healthy
-  // looking count of 0 when the tables do not exist at all. Phase 0 exists to
-  // prove the DB is alive, so a missing schema has to be loud.
-  const { count, error } = await db.from("nodes").select("id", { count: "exact" }).limit(1);
-  if (error) return `DB ERROR — ${error.message} (did you run supabase/schema.sql?)`;
-  return String(count ?? 0);
-}
-
-function lastProbe(): string {
-  try {
-    return readFileSync(".probe-latency.json", "utf8");
-  } catch {
-    return "no probe run yet";
-  }
-}
-
 export default async function Home() {
-  const count = await nodeCount();
-  const probe = lastProbe();
+  const entry = await canonEntry(2);
 
-  return (
-    <main className="mx-auto max-w-2xl p-16 font-mono text-sm">
-      <h1 className="mb-8 text-base">the lost &amp; found — phase 0</h1>
-      <p className="mb-2">nodes: {count}</p>
-      <pre className="whitespace-pre-wrap text-xs opacity-70">{probe}</pre>
-    </main>
-  );
+  // An empty tree is a setup problem, not a reader-facing state. Say so plainly
+  // rather than redirecting into nowhere.
+  if (!entry) {
+    return (
+      <main className="mx-auto max-w-xl px-6 py-16 font-mono text-sm text-neutral-400">
+        <p className="mb-2 text-neutral-200">The Lost &amp; Found is empty.</p>
+        <p>Run `npm run seed` to insert the trunk.</p>
+      </main>
+    );
+  }
+
+  redirect(`/n/${entry.id}`);
 }
