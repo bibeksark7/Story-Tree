@@ -20,9 +20,9 @@ this file by its structure.
 
 ## 1
 
-The corridor bends around a column of hatboxes, string knotted twice through
-the handles. A cafe menu is pinned beside them, laminate curling at one
-corner, a name scratched off next to a phone number no one ever dialed.
+You round a bend where a column of hatboxes stands, string knotted twice
+through the handles. A cafe menu is pinned beside them, laminate curling at
+one corner, a name scratched off next to a phone number no one ever dialed.
 Somewhere ahead, a drawer keeps sliding an inch out and an inch back, though
 nothing pulls it. The air smells of wet wool. Two doorways break the corridor
 here — one hung with a coat too heavy for any season, one propped open with a
@@ -33,7 +33,7 @@ single brick.
 
 ## 2
 
-The coat is heavier than it looks, sleeves stiff with old rain. Behind it the
+You find the coat heavier than it looks, sleeves stiff with old rain. Behind it the
 corridor narrows into a room stacked floor to ceiling with hatboxes exactly
 like the ones outside, thousands of them, each string knotted the same double
 knot. No two boxes are labeled the same way twice. A rolling ladder leans
@@ -45,8 +45,8 @@ shelf, one glove lies palm up, waiting for a hand that never came back.
 
 ## 3
 
-The brick scrapes when it moves, leaving a pale mark on the floor where it
-always sits. Beyond the doorway is a narrow vestibule lined with umbrellas,
+You feel the brick scrape as it moves, leaving a pale mark on the floor
+where it always sits. Beyond the doorway is a narrow vestibule lined with umbrellas,
 hundreds of them, handles hooked over a rail that runs the length of the wall
 and keeps going past where the light gives out. One umbrella near the front
 stands open, drying, though nothing here has ever been rained on. A ticket
