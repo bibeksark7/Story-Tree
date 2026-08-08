@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { GenerateChoice } from "./GenerateChoice";
 
 /** Never written by the narrator. Deterministic, always correctly worded. */
 export const CONTRIBUTE_LABEL = "Leave something here";
@@ -36,16 +37,13 @@ export function ChoiceList({ nodeId, choices, showContribute = false }: ChoiceLi
             {choice.label}
           </Link>
         ) : (
-          // Phase 2 turns this into a generating link. Until then it is honest
-          // about not being available rather than 404ing.
-          <span
+          <GenerateChoice
             key={choice.slotIndex}
-            aria-disabled="true"
-            className={`${base} cursor-not-allowed border-dashed border-neutral-800 text-neutral-600`}
-          >
-            {choice.label}
-            <span className="ml-2 text-xs uppercase tracking-wide">unwritten</span>
-          </span>
+            parentId={nodeId}
+            slot={choice.slotIndex}
+            label={choice.label}
+            className={base}
+          />
         ),
       )}
 
