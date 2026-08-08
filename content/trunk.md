@@ -20,24 +20,37 @@ this file by its structure.
 
 ## 1
 
-Replace this with the opening passage. It is the first thing anyone reads, and
-most visitors arrive here mid-story rather than at the top, so it should feel
-like a middle rather than a beginning. No preamble, no scene-setting throat
-clearing, no explanation of where the reader is.
+The corridor bends around a column of hatboxes, string knotted twice through
+the handles. A cafe menu is pinned beside them, laminate curling at one
+corner, a name scratched off next to a phone number no one ever dialed.
+Somewhere ahead, a drawer keeps sliding an inch out and an inch back, though
+nothing pulls it. The air smells of wet wool. Two doorways break the corridor
+here — one hung with a coat too heavy for any season, one propped open with a
+single brick.
 
-- Choice A placeholder
-- Choice B placeholder
+- Push past the coat
+- Move the propped brick
 
 ## 2
 
-Replace this with the second passage. It follows from choice A above.
+The coat is heavier than it looks, sleeves stiff with old rain. Behind it the
+corridor narrows into a room stacked floor to ceiling with hatboxes exactly
+like the ones outside, thousands of them, each string knotted the same double
+knot. No two boxes are labeled the same way twice. A rolling ladder leans
+against the far stack, its wheels rusted flat to the rail. On the nearest
+shelf, one glove lies palm up, waiting for a hand that never came back.
 
-- Choice A placeholder
-- Choice B placeholder
+- Climb the rolling ladder
+- Pick up the glove
 
 ## 3
 
-Replace this with the third passage. It follows from choice B of passage 1.
+The brick scrapes when it moves, leaving a pale mark on the floor where it
+always sits. Beyond the doorway is a narrow vestibule lined with umbrellas,
+hundreds of them, handles hooked over a rail that runs the length of the wall
+and keeps going past where the light gives out. One umbrella near the front
+stands open, drying, though nothing here has ever been rained on. A ticket
+stub is caught between its ribs, the printed date rubbed to nothing.
 
-- Choice A placeholder
-- Choice B placeholder
+- Read the ticket stub
+- Follow the rail further in
