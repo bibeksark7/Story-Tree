@@ -37,7 +37,9 @@ export default async function NodePage({ params }: PageProps<"/n/[id]">) {
     <main className="mx-auto flex w-full max-w-xl flex-col gap-10 px-6 py-16">
       <VisitPing nodeId={node.id} />
       <Passage prose={node.prose} illustration={illustration} />
-      <ChoiceList nodeId={node.id} choices={choices} />
+      {/* The contribute affordance appears once a reader is a few screens in,
+          so it lands as a discovery rather than an instruction. */}
+      <ChoiceList nodeId={node.id} choices={choices} showContribute={node.depth >= 2} />
     </main>
   );
 }

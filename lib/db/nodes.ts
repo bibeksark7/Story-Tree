@@ -139,6 +139,47 @@ export async function insertChild(
 }
 
 /**
+ * A branch created by leaving an object, rather than by tapping one of the two
+ * narrator choices.
+ *
+ * `slot_index` is deliberately null. The unique index covers
+ * (parent_id, slot_index), and Postgres treats NULLs as distinct — so any
+ * number of people can leave an object at the same passage and each gets their
+ * own branch, while the two narrator slots stay exactly one-each.
+ *
+ * These children are not rendered as choices (ChoiceList only maps slots 0
+ * and 1). They are reached by the permanent link the contributor is given, and
+ * by the canon walk if people read them.
+ */
+export async function insertContribution(input: {
+  parentId: string;
+  depth: number;
+  prose: string;
+  pendingChoices: [string, string];
+  artAsset: string;
+  objectId: string;
+  ancestorObjectIds: string[];
+}): Promise<NodeRow> {
+  const { data, error } = await db
+    .from("nodes")
+    .insert({
+      parent_id: input.parentId,
+      slot_index: null,
+      depth: input.depth,
+      prose: input.prose,
+      pending_choices: input.pendingChoices,
+      art_asset: input.artAsset,
+      object_id: input.objectId,
+      ancestor_object_ids: input.ancestorObjectIds,
+    })
+    .select(COLS)
+    .single();
+
+  if (error) throw new Error(`insertContribution: ${error.message}`);
+  return data as NodeRow;
+}
+
+/**
  * Fire-and-forget popularity signal. Read-modify-write, so concurrent visits
  * can drop a count — acceptable, this only ranks siblings for the canon walk.
  */

@@ -72,6 +72,32 @@ export async function enforceRateLimit(ipHash: string, kind: GuardKind): Promise
   }
 }
 
+/**
+ * The client downscales to a 1024px long edge before upload, which lands well
+ * under this. The server enforces it regardless — the client is not trusted.
+ */
+export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
+const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
+
+export function enforceUpload(file: unknown): asserts file is File {
+  if (!(file instanceof File)) {
+    throw new GuardError(400, "no_file", "No photograph arrived. Try again.");
+  }
+  if (!ALLOWED_TYPES.has(file.type)) {
+    throw new GuardError(
+      415,
+      "bad_type",
+      "That is not a photograph. The building only accepts JPEG, PNG, or WebP.",
+    );
+  }
+  if (file.size > MAX_UPLOAD_BYTES) {
+    throw new GuardError(413, "too_large", "That photograph is too large. Try again.");
+  }
+  if (file.size === 0) {
+    throw new GuardError(400, "empty_file", "That photograph was empty. Try again.");
+  }
+}
+
 export function enforceDepthCap(parentDepth: number): void {
   if (parentDepth + 1 > DEPTH_CAP) {
     throw new GuardError(
