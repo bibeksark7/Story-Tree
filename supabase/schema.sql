@@ -52,3 +52,18 @@ alter table nodes       enable row level security;
 alter table objects     enable row level security;
 alter table rate_events enable row level security;
 -- No policies created = deny all for anon/authenticated.
+
+-- RLS and table privileges are two separate gates, and enabling the first does
+-- not open the second. Without these grants every server-side query fails with
+-- "permission denied for table nodes" — which looks nothing like an RLS denial
+-- (that returns zero rows, not an error).
+--
+-- Granting to service_role ONLY is deliberate: anon and authenticated get no
+-- privileges at all, so the anon key is locked out by both gates.
+grant usage on schema public to service_role;
+
+grant all privileges on table public.nodes, public.objects, public.rate_events
+  to service_role;
+
+-- rate_events.id is bigserial, so inserts need the sequence too.
+grant usage, select on all sequences in schema public to service_role;
