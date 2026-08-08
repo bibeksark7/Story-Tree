@@ -70,36 +70,39 @@ which is what keeps the app fast. Editing `WORLD.md` is free and fine — just
 know that each edit means the first request afterwards is slightly slower. Do
 not let that discourage you from iterating.
 
-## Deliverable 2 — 25 illustrations
+## Deliverable 2 — 10 illustrations
 
 The app picks an illustration by crossing a **colour** with a **mood**, both
-chosen by the AI when it looks at a photograph. Every combination needs an
-image, so the grid is 5 x 5 = 25.
+chosen by the AI when it looks at a photograph.
 
-Colours: `amber`, `crimson`, `verdigris`, `indigo`, `bone`
-Moods: `dormant`, `restless`, `tender`, `ominous`, `absurd`
+The AI still classifies into all five moods, but the art grid collapses those
+into **two buckets**, so the set is 5 colours x 2 = **10 images, not 25**. Ten
+good illustrations beat twenty-five rushed ones, and a visitor tapping through
+five nodes cannot tell the difference.
 
-Filenames must be **exactly** `public/brand/{colour}-{mood}.png`, lowercase:
+- `dormant`, `tender` → use the **dormant** image
+- `restless`, `ominous`, `absurd` → use the **restless** image
+
+Filenames must be **exactly** these ten, lowercase, in `public/brand/`:
 
 ```
 amber-dormant.png    crimson-dormant.png    verdigris-dormant.png    indigo-dormant.png    bone-dormant.png
 amber-restless.png   crimson-restless.png   verdigris-restless.png   indigo-restless.png   bone-restless.png
-amber-tender.png     crimson-tender.png     verdigris-tender.png     indigo-tender.png     bone-tender.png
-amber-ominous.png    crimson-ominous.png    verdigris-ominous.png    indigo-ominous.png    bone-ominous.png
-amber-absurd.png     crimson-absurd.png     verdigris-absurd.png     indigo-absurd.png     bone-absurd.png
 ```
 
-A typo is a broken image in front of judges. Placeholder files with the correct
+A typo is a broken image in front of judges. Placeholder files with these exact
 names are already committed — replace them, do not rename them.
 
-**Claude cannot generate these images.** It can, and should, write the 25 Reve
-prompts: one per cell, consistent in style across the whole grid, with the
-colour and mood expressed visually, grounded in whatever `WORLD.md` ends up
-saying. Write `WORLD.md` first so the prompts inherit its atmosphere.
+`content/illustration-prompts.md` still contains all 25 prompts. **Use only the
+ten `-dormant` and `-restless` ones.** The other fifteen are not wasted — if
+there is time at the end, the grid can be expanded back to the full 5 x 5 by
+changing two lines of code.
 
-If time runs short, prioritise by colour: five strong images (one per colour,
-any mood) is a usable fallback the code can be reduced to. Twenty-five mediocre
-ones is worse than five good ones.
+**Claude cannot generate these images.** It wrote the prompts; Reve makes the
+pictures.
+
+If time runs short, do one image per colour (any of the two) — five is a usable
+fallback the code can be reduced to.
 
 ## Deliverable 3 — `content/trunk.md`
 
