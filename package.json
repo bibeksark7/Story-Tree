@@ -16,7 +16,8 @@
     "populate": "tsx --env-file=.env.local scripts/populate.ts",
     "typecheck": "tsc --noEmit",
     "seed-tree": "tsx --env-file=.env.local scripts/seed-tree.ts",
-    "preseed-tree": "tsx scripts/build-content.ts"
+    "preseed-tree": "tsx scripts/build-content.ts",
+    "optimize-art": "tsx scripts/optimize-art.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.116.0",

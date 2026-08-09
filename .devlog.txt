@@ -1,0 +1,27 @@
+
+> storytree@0.1.0 predev
+> tsx scripts/build-world.ts && tsx scripts/build-content.ts
+
+world.generated.ts written (3703 chars)
+content.generated.ts written — art: 4/4 climbers, 3/3 leaves, 4/4 skies
+
+> storytree@0.1.0 dev
+> next dev
+
+⚠ Port 3000 is in use by process 25736, using available port 3001 instead.
+▲ Next.js 16.3.0 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://26.220.135.237:3001
+- Environments: .env.local
+✓ Ready in 17.4s
+✓ Running next.config.ts took 814ms
+⨯ Another next dev server is already running.
+
+- Local:        http://localhost:3000
+- PID:          25736
+- Dir:          C:\Users\bsark\Downloads\Story Tree\storytree
+- Log:          .next\dev\logs\next-development.log
+
+You can access the existing server at http://localhost:3000,
+or run taskkill /PID 25736 /F to stop it and start a new one.
+[?25h

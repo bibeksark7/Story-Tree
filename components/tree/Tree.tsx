@@ -34,15 +34,17 @@ function trunkPath(count: number): string {
   return `M ${left.join(" L ")} L ${right.join(" L ")} Z`;
 }
 
-function Leaves({ x, y, variant, leaf, shade }: {
-  x: number; y: number; variant: number; leaf: string; shade: string;
+function Leaves({ x, y, variant, side, leaf, shade }: {
+  x: number; y: number; variant: number; side: -1 | 1; leaf: string; shade: string;
 }) {
-  // Reve leaf art is drawn neutral green and tinted per phase here, so one set
-  // of files serves every season.
   if (ART.leaf[variant % 3]) {
-    const s = 92;
+    const s = 96;
+    // The delivered clusters have a branch stub drawn into the bottom-right.
+    // Mirror them on right-hand branches so that stub always points back at
+    // the trunk instead of dangling off into the sky.
+    const flip = side === 1 ? -1 : 1;
     return (
-      <g transform={`translate(${x} ${y})`} aria-hidden="true">
+      <g transform={`translate(${x} ${y}) scale(${flip} 1)`} aria-hidden="true">
         <image href={`/tree/leaf-${variant % 3}.png`} x={-s / 2} y={-s / 2} width={s} height={s} />
       </g>
     );
@@ -119,7 +121,7 @@ export function Tree({
               strokeLinecap="round"
               fill="none"
             />
-            <Leaves x={b.x1} y={b.y1} variant={b.leaf} leaf={phase.leaf} shade={phase.leafShade} />
+            <Leaves x={b.x1} y={b.y1} variant={b.leaf} side={b.side} leaf={phase.leaf} shade={phase.leafShade} />
 
             {post && (
               <g
