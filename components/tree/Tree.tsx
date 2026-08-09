@@ -182,10 +182,17 @@ function Crown({ cx, cy, phase }: { cx: number; cy: number; phase: Phase }) {
           x={cx + dx}
           y={cy + dy}
           variant={0}
-          // Centre-anchored, so a blob lands exactly where it is placed. The
-          // rotation is only for variety — it spins in place.
+          // Centre-anchored, so a blob lands exactly where it is placed.
+          // Every cluster carries a drawn branch stump; spin each one so that
+          // stump faces the middle of the canopy, where the neighbouring blobs
+          // cover it. Rotating for variety instead left stumps poking out
+          // through the leaves.
           byStem={false}
-          angle={(i * 47) % 360}
+          angle={
+            dx === 0 && dy === 0
+              ? 90 - stubAngle(0)
+              : Math.atan2(-dy, -dx) * DEG - stubAngle(0)
+          }
           size={s}
         />
       ))}
@@ -213,7 +220,8 @@ export function Tree({
   const byIdx = new Map(posts.map((p) => [p.idx, p]));
 
   const topBranchY = branchY(Math.max(count, 1), count);
-  const crownY = topBranchY - CROWN * 0.5;
+  // Low enough that the climber is only just below the foliage.
+  const crownY = topBranchY - CROWN * 0.42;
   // The trunk continues up inside the canopy rather than stopping beneath it.
   const trunkStop = crownY - 40;
 
