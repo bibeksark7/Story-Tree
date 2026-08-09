@@ -289,6 +289,7 @@ export function Tree({
   phaseIndex,
   onOpen,
   highlightIdx,
+  skin = "default",
 }: {
   count: number;
   posts: PostSummary[];
@@ -296,6 +297,7 @@ export function Tree({
   phaseIndex: number;
   onOpen: (post: PostSummary) => void;
   highlightIdx?: number;
+  skin?: "default" | "reve";
 }) {
   const h = treeHeight(count);
   const climber = climberPosition(count);
@@ -407,7 +409,14 @@ export function Tree({
       <Crown cx={trunkX(crownY)} cy={crownY} phase={phase} />
       <CrownFruit cx={trunkX(crownY)} cy={crownY} />
 
-      <Climber x={climber.x} y={climber.y} facing={climber.facing} ink={phase.ink} phase={phaseIndex} />
+      <Climber
+        x={climber.x}
+        y={climber.y}
+        facing={climber.facing}
+        ink={phase.ink}
+        phase={phaseIndex}
+        skin={skin}
+      />
     </svg>
   );
 }

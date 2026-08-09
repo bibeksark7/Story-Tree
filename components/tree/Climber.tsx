@@ -15,12 +15,15 @@ export function Climber({
   facing,
   ink,
   phase,
+  skin = "default",
 }: {
   x: number;
   y: number;
   facing: -1 | 1;
   ink: string;
   phase: number;
+  /** "reve" is the unlocked alternate, found by typing the word into the composer. */
+  skin?: "default" | "reve";
 }) {
   const slot = phase % 4;
 
@@ -30,7 +33,43 @@ export function Climber({
     const h = 120;
     return (
       <g transform={`translate(${x} ${y}) scale(${facing} 1)`} aria-hidden="true">
-        <image href={`/tree/climber-${slot}.png`} x={-w / 2} y={-h + 22} width={w} height={h} />
+        {skin === "reve" && (
+          <defs>
+            <filter id="reve-skin">
+              {/* Warm gold wash, so the unlocked climber is unmistakable. */}
+              <feColorMatrix
+                type="matrix"
+                values="0.9 0.5 0.1 0 0.05
+                        0.6 0.6 0.1 0 0.02
+                        0.1 0.2 0.4 0 0
+                        0   0   0   1 0"
+              />
+            </filter>
+          </defs>
+        )}
+        <image
+          href={`/tree/climber-${slot}.png`}
+          x={-w / 2}
+          y={-h + 22}
+          width={w}
+          height={h}
+          filter={skin === "reve" ? "url(#reve-skin)" : undefined}
+        />
+        {skin === "reve" &&
+          [
+            [-30, -84, 5],
+            [26, -104, 4],
+            [8, -58, 3],
+          ].map(([sx, sy, r], i) => (
+            <circle key={i} cx={sx} cy={sy} r={r} fill="#ffe27a">
+              <animate
+                attributeName="opacity"
+                values="0.2;1;0.2"
+                dur={`${1.6 + i * 0.4}s`}
+                repeatCount="indefinite"
+              />
+            </circle>
+          ))}
       </g>
     );
   }

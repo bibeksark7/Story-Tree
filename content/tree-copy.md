@@ -59,6 +59,19 @@ Long afternoon
 Dusk
 Night
 
+## Sign
+
+The hand-painted board nailed up at the base of the tree. Two short lines,
+separated by a `|`. Keep it obviously a joke — real visitors read this.
+
+Climb the tree | free Claude API key at the top*
+
+## Sign footnote
+
+The small print under it. One short line.
+
+*there is no key. there is only tree.
+
 ## Empty tree
 
 Shown when nobody has posted anything yet. Should make the first post feel

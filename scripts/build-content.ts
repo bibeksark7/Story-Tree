@@ -60,6 +60,8 @@ const copy = {
   ),
   milestoneButton: pick("Milestone button", "Keep climbing"),
   emptyTree: pick("Empty tree", "Nobody has left anything yet. He is waiting at the bottom."),
+  sign: pick("Sign", "Climb the tree | free Claude API key at the top*"),
+  signFootnote: pick("Sign footnote", "*there is no key. there is only tree."),
   phaseNames: (() => {
     const body = s.get("phase names");
     const got = body ? lines(body) : [];

@@ -1,4 +1,5 @@
 import type { Phase } from "@/lib/tree/palette";
+import { COPY } from "@/lib/tree/content.generated";
 
 /**
  * The field the tree stands in.
@@ -30,6 +31,37 @@ export function GroundBack({ phase }: { phase: Phase }) {
         opacity="0.4"
       />
     </svg>
+  );
+}
+
+/** A hand-painted board nailed up at the base of the tree. */
+export function Sign({ phase }: { phase: Phase }) {
+  const [top, bottom] = COPY.sign.split("|").map((t) => t.trim());
+
+  return (
+    <div className="pointer-events-none absolute bottom-[86px] left-1/2 z-30 -translate-x-1/2">
+      <div className="-rotate-[2.2deg]">
+        <div
+          className="rounded-[3px] border-[3px] px-4 py-2 text-center shadow-md"
+          style={{ background: "#c9975b", borderColor: "#7a4f28" }}
+        >
+          <p className="font-label text-[0.72rem] uppercase leading-tight tracking-[0.14em] text-[#3d2410]">
+            {top}
+          </p>
+          {bottom && (
+            <p className="font-label text-[0.72rem] uppercase leading-tight tracking-[0.14em] text-[#3d2410]">
+              {bottom}
+            </p>
+          )}
+        </div>
+        <p
+          className="mt-1 text-center font-label text-[0.6rem] lowercase tracking-wide"
+          style={{ color: phase.ink, opacity: 0.65 }}
+        >
+          {COPY.signFootnote}
+        </p>
+      </div>
+    </div>
   );
 }
 

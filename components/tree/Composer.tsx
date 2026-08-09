@@ -21,11 +21,16 @@ async function downscale(file: File): Promise<Blob> {
   return blob;
 }
 
+/** Typing this instead of a post unlocks the alternate climber. */
+const UNLOCK_WORD = "reve";
+
 export function Composer({
   onPosted,
+  onUnlock,
   ink,
 }: {
   onPosted: (idx: number, milestone: number | null) => void;
+  onUnlock: () => void;
   ink: string;
 }) {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -55,6 +60,14 @@ export function Composer({
 
   async function postText() {
     if (!text.trim() || busy) return;
+
+    // The easter egg never reaches the tree — it unlocks a skin and clears.
+    if (text.trim().toLowerCase() === UNLOCK_WORD) {
+      setText("");
+      onUnlock();
+      return;
+    }
+
     const form = new FormData();
     form.append("kind", "text");
     form.append("body", text.trim());
