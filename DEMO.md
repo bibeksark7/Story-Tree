@@ -2,8 +2,10 @@
 
 Everything you need while standing in front of judges, on one page.
 
-> **Not yet rehearsed.** The tree was built after the pivot and has not been run
-> end to end on a phone. Do a full pass before relying on any of this.
+> **Verified in production; not yet rehearsed on a phone.** Posting, photo
+> upload, captioning, the milestone, and the kill switch have all been tested
+> live. What has not been tested is a real phone on cellular — do that pass
+> before you present.
 
 ## Before you start
 
@@ -39,7 +41,7 @@ people leave things behind.**
 
 | What you see | What to do |
 | --- | --- |
-| Ugly post on the tree | `npm run hide -- node <id>` removes it from every read path |
+| Ugly post on the tree | `npm run hide -- post <id>` removes it from every read path, instantly, no deploy |
 | Milestone doesn't fire | Check the count — it fires on exact multiples of 50 |
 | Photo upload fails | Post a text note instead; the loop is identical |
 | Tree renders slowly | Expected past a few hundred posts. Reseed lower: `npm run seed-tree -- 47 --reset` |
@@ -73,6 +75,6 @@ That last row is why the old code is still in the repo. Do not delete it.
 ```bash
 npm run seed-tree -- 47           # fill the tree; creates the storage bucket
 npm run seed-tree -- 47 --reset   # wipe and refill
-npm run hide -- node <id>         # kill switch (--unhide reverses it)
+npm run hide -- post <id>         # kill switch (--unhide reverses it)
 npm run typecheck                 # tsc --noEmit
 ```

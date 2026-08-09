@@ -5,9 +5,10 @@
 // query in lib/db filters is_hidden, so hiding a node also hides its subtree
 // from the canon walk and from choice links.
 //
-//   npm run hide -- node <id>
+//   npm run hide -- post <id>      the climbing tree
+//   npm run hide -- node <id>      the old story (fallback demo)
 //   npm run hide -- object <id>
-//   npm run hide -- node <id> --unhide
+//   npm run hide -- post <id> --unhide
 //
 // Env comes from `tsx --env-file=.env.local` (see the "hide" npm script).
 import { createClient } from "@supabase/supabase-js";
@@ -22,12 +23,17 @@ async function main() {
   const [kind, id] = process.argv.slice(2);
   const unhide = process.argv.includes("--unhide");
 
-  if ((kind !== "node" && kind !== "object") || !id) {
-    console.error("usage: npm run hide -- <node|object> <id> [--unhide]");
+  const TABLES: Record<string, string> = {
+    post: "posts",     // the climbing tree
+    node: "nodes",     // the old story, kept as a fallback demo
+    object: "objects",
+  };
+
+  const table = TABLES[kind];
+  if (!table || !id) {
+    console.error("usage: npm run hide -- <post|node|object> <id> [--unhide]");
     process.exit(1);
   }
-
-  const table = kind === "node" ? "nodes" : "objects";
   const { data, error } = await db
     .from(table)
     .update({ is_hidden: !unhide })
