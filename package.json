@@ -14,7 +14,8 @@
     "seed": "tsx --env-file=.env.local scripts/seed.ts",
     "hide": "tsx --env-file=.env.local scripts/hide.ts",
     "populate": "tsx --env-file=.env.local scripts/populate.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seed-tree": "tsx --env-file=.env.local scripts/seed-tree.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.116.0",
