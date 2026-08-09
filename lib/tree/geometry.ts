@@ -51,8 +51,10 @@ export function trunkX(y: number): number {
 
 /** Trunk thickness tapers toward the crown. */
 export function trunkWidth(idx: number, count: number): number {
+  // Near enough to uniform: thick the whole way up, with only a slight flare
+  // toward the base so it still sits on the ground rather than floating.
   const fromTop = Math.max(count - idx, 0);
-  return 22 + Math.min(fromTop, 40) * 1.05;
+  return 56 + Math.min(fromTop, 40) * 0.22;
 }
 
 export type Branch = {
