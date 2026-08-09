@@ -60,13 +60,22 @@ function trunkPath(count: number, stopY: number): string {
   return `M ${left.join(" L ")} L ${right.join(" L ")} Z`;
 }
 
-/** One cluster, rotated so its own stem runs back along the branch. */
+/**
+ * One cluster.
+ *
+ * `byStem` anchors the image at its own stem, which is what a branch tip needs
+ * — the foliage then grows outward from the end of the branch. Inside the
+ * canopy that is wrong: anchoring by the stem throws each blob away from where
+ * it was placed, and rotation carries it further, which is what left a hole
+ * through the middle. There, anchor by the centre instead.
+ */
 function Cluster({
   x,
   y,
   variant,
   angle,
   size = CLUSTER,
+  byStem = true,
 }: {
   x: number;
   y: number;
@@ -74,17 +83,20 @@ function Cluster({
   /** Direction the branch arrives from, in degrees. */
   angle: number;
   size?: number;
+  byStem?: boolean;
 }) {
   const v = variant % 3;
   const { ax, ay } = ATTACH[v];
-  const rotate = angle - stubAngle(v);
+  const ox = byStem ? ax : 0.5;
+  const oy = byStem ? ay : 0.5;
+  const rotate = byStem ? angle - stubAngle(v) : angle;
 
   return (
     <g transform={`translate(${x} ${y}) rotate(${rotate})`} aria-hidden="true">
       <image
         href={`/tree/leaf-${v}.png`}
-        x={-ax * size}
-        y={-ay * size}
+        x={-ox * size}
+        y={-oy * size}
         width={size}
         height={size}
       />
@@ -170,8 +182,10 @@ function Crown({ cx, cy, phase }: { cx: number; cy: number; phase: Phase }) {
           x={cx + dx}
           y={cy + dy}
           variant={0}
-          // Stems angle back toward the middle, where neighbours cover them.
-          angle={Math.atan2(-dy, -dx) * DEG}
+          // Centre-anchored, so a blob lands exactly where it is placed. The
+          // rotation is only for variety — it spins in place.
+          byStem={false}
+          angle={(i * 47) % 360}
           size={s}
         />
       ))}
@@ -199,7 +213,7 @@ export function Tree({
   const byIdx = new Map(posts.map((p) => [p.idx, p]));
 
   const topBranchY = branchY(Math.max(count, 1), count);
-  const crownY = topBranchY - CROWN * 0.42;
+  const crownY = topBranchY - CROWN * 0.5;
   // The trunk continues up inside the canopy rather than stopping beneath it.
   const trunkStop = crownY - 40;
 

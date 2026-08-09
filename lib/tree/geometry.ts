@@ -12,10 +12,11 @@ export const SEGMENT = 132;
 /**
  * Space above the newest branch: room for the climber to keep going, and for
  * the canopy to sit without being clipped by the top of the canvas. The
- * tallest crown cluster reaches ~220 units above the crown's centre, so this
- * has to comfortably exceed that.
+ * tallest crown cluster reaches ~230 units above the crown's centre, and the
+ * climber needs clear trunk beneath the canopy rather than sitting inside it,
+ * so this has to comfortably exceed both.
  */
-export const CROWN = 540;
+export const CROWN = 720;
 
 /** Space below the first branch, for the base of the trunk. */
 export const ROOT = 180;
