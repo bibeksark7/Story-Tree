@@ -124,6 +124,7 @@ function LeafShapes({ x, y, variant, leaf, shade }: {
 function Crown({ cx, cy, phase }: { cx: number; cy: number; phase: Phase }) {
   // dx, dy, size — back row first.
   const blobs: Array<[number, number, number]> = [
+    // Outer silhouette, back row.
     [-84, 6, 148],
     [84, 2, 150],
     [-50, -56, 164],
@@ -134,10 +135,21 @@ function Crown({ cx, cy, phase }: { cx: number; cy: number; phase: Phase }) {
     [0, -170, 110],
     [-74, 50, 142],
     [76, 46, 144],
+    // Middle mass — these close the hollow where the trunk used to show
+    // through, and bridge the centre to the shoulders.
+    [-66, -24, 156],
+    [68, -28, 158],
+    [-44, 58, 158],
+    [46, 54, 160],
+    [0, 82, 170],
     [-36, -8, 180],
     [38, -12, 182],
-    [0, 32, 188],
-    [0, -32, 184],
+    [-20, 20, 178],
+    [22, 16, 180],
+    [0, -62, 178],
+    // Front and centre, drawn last so the middle reads as solid.
+    [0, 32, 190],
+    [0, -32, 186],
   ];
 
   if (!ART.leaf[0]) {
