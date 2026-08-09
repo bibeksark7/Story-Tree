@@ -49,3 +49,6 @@ lib/ai/world.generated.ts
 
 # generated from content/tree-copy.md + public/tree by scripts/build-content.ts
 lib/tree/content.generated.ts
+
+# local dev server log
+.devlog.txt
