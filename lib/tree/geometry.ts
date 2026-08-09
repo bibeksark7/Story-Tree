@@ -110,7 +110,9 @@ export function isMilestone(count: number): boolean {
 }
 
 export function phaseOf(count: number): number {
-  return Math.floor(Math.max(count - 1, 0) / PHASE_EVERY);
+  // The 100th post is the one that changes the colour, not the 101st — which
+  // also lands the phase change on the same post as the milestone.
+  return Math.floor(count / PHASE_EVERY);
 }
 
 /** Posts near a given scroll position, so we never render 400 branches at once. */
