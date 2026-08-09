@@ -8,7 +8,7 @@ import { Composer } from "./Composer";
 import type { PostSummary } from "./types";
 import { paletteFor } from "@/lib/tree/palette";
 import { MILESTONE_EVERY, phaseOf } from "@/lib/tree/geometry";
-import { COPY } from "@/lib/tree/content.generated";
+import { COPY, ART } from "@/lib/tree/content.generated";
 
 export function TreeView({
   initialCount,
@@ -44,7 +44,19 @@ export function TreeView({
   }
 
   return (
-    <div className="relative h-dvh w-full overflow-hidden" style={{ background: phase.skyTop }}>
+    <div
+      className="relative h-dvh w-full overflow-hidden bg-cover bg-center"
+      style={
+        // The sky sits behind the scroll container rather than inside the SVG,
+        // so it stays put while the tree scrolls past — parallax, and no
+        // stretching a wide image over a canvas thousands of pixels tall.
+        ART.sky[phaseIndex % 4]
+          ? {
+              backgroundImage: `linear-gradient(to bottom, transparent 55%, ${phase.skyBottom}), url(/tree/sky-${phaseIndex % 4}.png)`,
+            }
+          : { background: `linear-gradient(${phase.skyTop}, ${phase.skyBottom})` }
+      }
+    >
       <div ref={scroller} className="h-full w-full overflow-y-auto overscroll-contain">
         <Tree
           count={count}

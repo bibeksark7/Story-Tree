@@ -9,8 +9,13 @@
 /** Vertical distance the tree gains per post. */
 export const SEGMENT = 132;
 
-/** Space above the newest branch so the climber has somewhere to go. */
-export const CROWN = 260;
+/**
+ * Space above the newest branch: room for the climber to keep going, and for
+ * the canopy to sit without being clipped by the top of the canvas. The
+ * tallest crown cluster reaches ~220 units above the crown's centre, so this
+ * has to comfortably exceed that.
+ */
+export const CROWN = 540;
 
 /** Space below the first branch, for the base of the trunk. */
 export const ROOT = 180;
