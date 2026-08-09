@@ -40,6 +40,11 @@ present and still works at `/n/[id]` as a fallback demo.
 
 It looks like dead code. It is insurance.
 
+**`WORLD.md` in particular: do not add headers, notes, or markers to it.** Its
+entire contents are compiled into the old narrator's system prompt verbatim, so
+anything written there is read by the model as instructions. The other stale
+files carry "previous version" markers; `WORLD.md` deliberately does not.
+
 ## How the tree works
 
 Everything derives from one number: the total post count.

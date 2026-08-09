@@ -2,69 +2,77 @@
 
 Everything you need while standing in front of judges, on one page.
 
+> **Not yet rehearsed.** The tree was built after the pivot and has not been run
+> end to end on a phone. Do a full pass before relying on any of this.
+
+## Before you start
+
+**Seed the tree to 47 posts.**
+
+```bash
+npm run seed-tree -- 47
+```
+
+This is the single most important line in this file. A judge's own post then
+triggers the 50-post milestone **in front of them**. On an empty tree the best
+feature in the product never fires and nobody ever learns it exists.
+
+Check the header reads `47 posts · Morning` and `3 to the next milestone`.
+
 ## The demo, in 60 seconds
 
-1. **Hand them your phone**, already open at the live URL. Do not explain first —
-   let them read one passage. It should be obvious what to do.
-2. Let them **tap a choice**. If it is unwritten they will watch the ledger
-   write itself for about seven seconds. That wait is part of the demo, not an
-   apology — say "it's writing that part now, nobody has been down there."
-3. A few taps in, **"Leave something here"** appears. Ask them to photograph
-   anything on the table.
-4. About seven seconds later they are reading a passage **with their object in
-   it**, at a URL that will still work tomorrow.
-5. Close with the leak: *"and someone else will find it, half-buried, in a part
-   of the story you'll never see."*
+1. **Hand them your phone**, already open at the live URL. Don't explain — a
+   tree with a small figure near the top explains itself.
+2. Let them **scroll down**. That's walking back through everything other people
+   have left. Tapping any branch opens that post.
+3. **Ask them to leave something.** A note in the box, or the camera button for
+   a photo. Anything on the table works.
+4. The tree grows a branch and the climber goes higher. Theirs is on it.
+5. **Two posts later, the milestone fires.** Everything since the last one
+   scatters across the screen. That is the moment — let it play, don't talk
+   over it.
 
-The one line that lands: **no signup, no blank page, no instructions.**
-
-## Fallback node
-
-If canon resolution misbehaves and `/` sends you somewhere bad, go straight to:
-
-```
-/n/960f18f6-0772-4cc1-a263-9bfb7dad7208
-```
-
-Depth 2, both choices already written, contribute affordance showing — so it
-demos with zero waiting. **Have this open in a second tab before you start.**
+The line that lands: **nobody is in charge of this. He only climbs because
+people leave things behind.**
 
 ## If something goes wrong
 
 | What you see | What to do |
 | --- | --- |
-| Ugly or broken passage in the tree | `npm run hide -- node <id>` — gone from every read path instantly, no deploy |
-| Bad object leaking everywhere | `npm run hide -- object <id>` |
-| Generation feels too slow on venue wifi | Set `PROSE_GUARD=off` in Vercel — saves ~1s per generation |
-| Leaks are confusing the story | Set `LEAK_CHANCE=0` in Vercel |
-| Camera does nothing on their phone | It degrades to a photo picker. Ask them to choose an existing photo instead — the rest of the flow is identical |
-| Everything is on fire | Show the fallback node and talk through the photo path instead of running it |
+| Ugly post on the tree | `npm run hide -- node <id>` removes it from every read path |
+| Milestone doesn't fire | Check the count — it fires on exact multiples of 50 |
+| Photo upload fails | Post a text note instead; the loop is identical |
+| Tree renders slowly | Expected past a few hundred posts. Reseed lower: `npm run seed-tree -- 47 --reset` |
+| Everything is on fire | The previous version still works at `/n/[id]` — a complete, rehearsed branching-story demo. Use it |
 
-Neither env change needs a code deploy. Change the value in Vercel, redeploy
-from the dashboard, done in under a minute.
+That last row is why the old code is still in the repo. Do not delete it.
 
-## Numbers worth knowing
+## What to say about the tech
 
-- **Photo → new branch: about 7 seconds** warm.
-- **Tap → new passage: about 7.6 seconds** warm, including the safety screen.
-- Coherence audit over 40 generated passages: every one landed in the 70–90
-  word target, and none used any of the world bible's banned vocabulary.
-- Photographs are **never stored** — read once by the model, then discarded.
-  Nothing is written to disk or to Storage. Say this out loud; judges ask.
+- **Everything derives from one number.** Tree height, every branch position,
+  the climber, the colour phase, the milestones — all computed from the post
+  count. One table, no graph, nothing to keep in sync.
+- **The tree is drawn in code, not assembled from tiles**, so it grows
+  infinitely with no seams. Generated art does the climber, leaves and skies —
+  the characterful parts.
+- **Concurrent posts can't collide.** Two people posting at the same instant
+  race on a unique index and the loser retries, so nobody loses their spot.
+- **We never store who anyone is.** Rate limiting works off a salted hash of
+  the IP, not the address.
 
 ## Before you leave the house
 
 - [ ] Run the full flow on **your own phone, on cellular** — not venue wifi
-- [ ] Run it once on an **iPhone** and once on an **Android**
-- [ ] Confirm all 10 illustrations are real, not placeholders
-- [ ] Open the fallback node in a second tab
+- [ ] Seed to 47 and confirm the milestone fires on the third post
+- [ ] Check all ten art files are real, not placeholders
+- [ ] Have `/n/[id]` open in a second tab as the fallback
 - [ ] Charge the phone
 
 ## Operator commands
 
 ```bash
-npm run seed -- --reset      # rebuild the trunk from content/trunk.md (deletes everything)
-npm run populate -- 40       # grow the tree to ~40 nodes
-npm run hide -- node <id>    # kill switch (add --unhide to reverse)
-npm run probe -- photo.jpg   # time the whole photo -> passage chain
+npm run seed-tree -- 47           # fill the tree; creates the storage bucket
+npm run seed-tree -- 47 --reset   # wipe and refill
+npm run hide -- node <id>         # kill switch (--unhide reverses it)
+npm run typecheck                 # tsc --noEmit
 ```

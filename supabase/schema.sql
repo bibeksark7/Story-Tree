@@ -1,3 +1,9 @@
+-- PREVIOUS VERSION. This is the schema for the branching lost-property story,
+-- which is kept as a working fallback at /n/[id]. It is already applied.
+--
+-- The current product is the climbing tree: see supabase/tree.sql.
+-- Do not run this file again; it would fail on tables that already exist.
+
 create extension if not exists "pgcrypto";
 
 create table objects (

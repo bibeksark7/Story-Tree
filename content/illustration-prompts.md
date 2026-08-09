@@ -1,5 +1,12 @@
 # Illustration prompts — 25-cell art grid
 
+> **PREVIOUS VERSION — not the current art brief.**
+> These are the 25 sepia illustration prompts for the branching lost-property
+> story, kept because that version still runs as a fallback at `/n/[id]`.
+>
+> **The current art brief is `PARTNER-BRIEF.md`** — a cartoon climber, leaf
+> clusters and skies, dropped into `public/tree/`. Do not work from this file.
+
 Reve prompts for the 5×5 grid described in `PARTNER-BRIEF.md`. Paste each one
 into Reve as-is; each is self-contained so they can be generated in any order
 or re-rolled individually without losing consistency.
