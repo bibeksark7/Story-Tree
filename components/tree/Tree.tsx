@@ -118,14 +118,19 @@ export function Tree({
                   if (e.key === "Enter" || e.key === " ") onOpen(post);
                 }}
               >
+                {/* Invisible hit area. The visible marker is small so the tree
+                    stays legible, but a finger needs at least 44px — which at
+                    this canvas width means a radius of ~27 SVG units. */}
+                <circle cx={b.x1} cy={b.y1} r={27} fill="transparent" />
                 <circle
                   cx={b.x1}
                   cy={b.y1}
-                  r={isHot ? 17 : 13}
+                  r={isHot ? 19 : 15}
                   fill={post.kind === "photo" ? phase.skyBottom : "#fff"}
                   stroke={phase.ink}
                   strokeWidth="2.5"
                   opacity="0.96"
+                  style={{ pointerEvents: "none" }}
                 />
                 <text
                   x={b.x1}

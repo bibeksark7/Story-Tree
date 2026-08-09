@@ -5,6 +5,9 @@
  * PNG in public/tree/climber-{phase}.png and render an <image> here instead of
  * the shapes. Everything else — position, facing, scale — stays.
  */
+/** He is the emotional core, so he is drawn well above incidental size. */
+const SCALE = 1.7;
+
 export function Climber({
   x,
   y,
@@ -17,7 +20,7 @@ export function Climber({
   ink: string;
 }) {
   return (
-    <g transform={`translate(${x} ${y}) scale(${facing} 1)`} aria-hidden="true">
+    <g transform={`translate(${x} ${y}) scale(${facing * SCALE} ${SCALE})`} aria-hidden="true">
       {/* back arm, reaching up */}
       <path
         d="M2 -22 L14 -44"
