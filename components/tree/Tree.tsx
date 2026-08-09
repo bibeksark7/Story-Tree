@@ -282,6 +282,61 @@ function CrownFruit({ cx, cy }: { cx: number; cy: number }) {
   );
 }
 
+/**
+ * Birds. Two curves meeting at a peak — the shape everyone draws when they
+ * draw a distant bird. Grouped in small flocks up the sky, hashed from the
+ * flock index so they never reshuffle, with a slow drift so they are not
+ * quite static.
+ */
+function Birds({ height }: { height: number }) {
+  const every = SEGMENT * 2.4;
+  const flocks = Math.max(Math.floor(height / every), 1);
+
+  return (
+    <g aria-hidden="true">
+      {Array.from({ length: flocks }, (_, f) => {
+        const side = cloudNoise(f, 51) < 0.5 ? -1 : 1;
+        const baseX = CENTER + side * (120 + cloudNoise(f, 52) * 110);
+        const baseY = height - f * every - cloudNoise(f, 53) * every * 0.6;
+        const birds = 2 + Math.floor(cloudNoise(f, 54) * 3);
+        const drift = 14 + cloudNoise(f, 55) * 22;
+        const dur = 7 + cloudNoise(f, 56) * 6;
+
+        return (
+          <g key={f}>
+            <animateTransform
+              attributeName="transform"
+              type="translate"
+              values={`0 0; ${drift} ${-drift * 0.35}; 0 0`}
+              dur={`${dur}s`}
+              repeatCount="indefinite"
+            />
+            {Array.from({ length: birds }, (_, b) => {
+              const n = f * 10 + b;
+              const x = baseX + (cloudNoise(n, 57) - 0.5) * 92;
+              const y = baseY + (cloudNoise(n, 58) - 0.5) * 74;
+              const s = 0.62 + cloudNoise(n, 59) * 0.62;
+              const tilt = (cloudNoise(n, 60) - 0.5) * 18;
+              return (
+                <path
+                  key={b}
+                  d="M -13 2 C -9 -7, -3 -7, 0 0 C 3 -7, 9 -7, 13 2"
+                  transform={`translate(${x} ${y}) rotate(${tilt}) scale(${s})`}
+                  fill="none"
+                  stroke="#2f3f5c"
+                  strokeWidth={2.6 / s}
+                  strokeLinecap="round"
+                  opacity={0.5 + cloudNoise(n, 61) * 0.3}
+                />
+              );
+            })}
+          </g>
+        );
+      })}
+    </g>
+  );
+}
+
 export function Tree({
   count,
   posts,
@@ -330,6 +385,7 @@ export function Tree({
           stays put while the tree scrolls past it. */}
 
       <Clouds height={h} />
+      <Birds height={h} />
 
       <path d={trunkPath(count, trunkStop)} fill={phase.bark} />
 

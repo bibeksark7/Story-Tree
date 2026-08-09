@@ -8,6 +8,7 @@ import { Composer } from "./Composer";
 import { GroundBack, GroundFront, Sign } from "./Ground";
 import { Favourites } from "./Favourites";
 import { Calendar } from "./Calendar";
+import { CursorLeaves } from "./CursorLeaves";
 import {
   useSkin,
   useFavourites,
@@ -156,6 +157,8 @@ export function TreeView({
       </button>
 
       {calOpen && <Calendar phase={phase} onClose={() => setCalOpen(false)} />}
+
+      <CursorLeaves />
 
       <Favourites
         favourites={favourites}
