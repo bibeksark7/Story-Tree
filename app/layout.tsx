@@ -19,9 +19,9 @@ const archivo = Archivo_Narrow({
 });
 
 export const metadata: Metadata = {
-  title: "The Lost & Found",
+  title: "StoryTree",
   description:
-    "A building with no outside, holding every object anyone set down and did not pick back up. Read a passage. Leave something behind.",
+    "One tree, one climber, and everything anyone leaves behind. Post a note or a photo and he climbs higher.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

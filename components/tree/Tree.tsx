@@ -112,27 +112,39 @@ function LeafShapes({ x, y, variant, leaf, shade }: {
 }
 
 /**
- * The canopy. Without it the trunk simply stops, which reads as a cut-off pole
- * rather than the top of a tree. Deterministic layout, so it never reshuffles.
+ * The canopy.
+ *
+ * Deliberately dense and heavily overlapping: spaced-out clusters read as
+ * separate bushes floating in the sky, not as the top of a tree. Every blob
+ * overlaps its neighbours by well over half, and they are drawn back to front
+ * so the silhouette closes up into one mass. Only the round cluster is used —
+ * the hanging spray and the upright fan read as individual sprigs at this
+ * density.
  */
 function Crown({ cx, cy, phase }: { cx: number; cy: number; phase: Phase }) {
-  const blobs: Array<[number, number, number, number]> = [
-    // dx, dy, size, variant
-    [0, 10, 168, 0],
-    [-84, 34, 136, 0],
-    [84, 30, 140, 0],
-    [-52, -54, 128, 2],
-    [56, -50, 132, 0],
-    [0, -104, 124, 2],
-    [-108, -18, 112, 0],
-    [110, -22, 116, 2],
+  // dx, dy, size — back row first.
+  const blobs: Array<[number, number, number]> = [
+    [-84, 6, 148],
+    [84, 2, 150],
+    [-50, -56, 164],
+    [52, -60, 166],
+    [0, -94, 156],
+    [-26, -134, 130],
+    [30, -138, 128],
+    [0, -170, 110],
+    [-74, 50, 142],
+    [76, 46, 144],
+    [-36, -8, 180],
+    [38, -12, 182],
+    [0, 32, 188],
+    [0, -32, 184],
   ];
 
   if (!ART.leaf[0]) {
     return (
       <g aria-hidden="true">
         {blobs.map(([dx, dy, s], i) => (
-          <circle key={i} cx={cx + dx} cy={cy + dy} r={s / 2.6} fill={i % 2 ? phase.leafShade : phase.leaf} />
+          <circle key={i} cx={cx + dx} cy={cy + dy} r={s / 2.4} fill={i % 2 ? phase.leafShade : phase.leaf} />
         ))}
       </g>
     );
@@ -140,13 +152,13 @@ function Crown({ cx, cy, phase }: { cx: number; cy: number; phase: Phase }) {
 
   return (
     <g aria-hidden="true">
-      {blobs.map(([dx, dy, s, v], i) => (
+      {blobs.map(([dx, dy, s], i) => (
         <Cluster
           key={i}
           x={cx + dx}
           y={cy + dy}
-          variant={v}
-          // Stems point back toward the middle of the canopy.
+          variant={0}
+          // Stems angle back toward the middle, where neighbours cover them.
           angle={Math.atan2(-dy, -dx) * DEG}
           size={s}
         />
@@ -175,8 +187,9 @@ export function Tree({
   const byIdx = new Map(posts.map((p) => [p.idx, p]));
 
   const topBranchY = branchY(Math.max(count, 1), count);
-  const crownY = topBranchY - CROWN * 0.52;
-  const trunkStop = crownY + 30;
+  const crownY = topBranchY - CROWN * 0.42;
+  // The trunk continues up inside the canopy rather than stopping beneath it.
+  const trunkStop = crownY - 40;
 
   return (
     <svg
@@ -229,9 +242,9 @@ export function Tree({
                   if (e.key === "Enter" || e.key === " ") onOpen(post);
                 }}
               >
-                {/* Invisible hit area — a finger needs 44px, which is ~27 SVG
+                {/* Invisible hit area — a finger needs 44px, which is ~30 SVG
                     units at this canvas width. */}
-                <circle cx={b.x1} cy={b.y1} r={27} fill="transparent" />
+                <circle cx={b.x1} cy={b.y1} r={30} fill="transparent" />
                 <circle
                   cx={b.x1}
                   cy={b.y1}

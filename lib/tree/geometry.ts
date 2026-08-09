@@ -20,10 +20,11 @@ export const CROWN = 540;
 /** Space below the first branch, for the base of the trunk. */
 export const ROOT = 180;
 
-// Narrow enough that a 375px phone only scales down ~19%, so the climber and
-// the tap targets stay a usable size. A wider canvas made the climber 39px
-// tall and the post markers 15px — well under the 44px minimum.
-export const WIDTH = 460;
+// Narrow enough that a 375px phone only scales down ~25%, so the climber and
+// the tap targets stay usable — a wider canvas made the climber 39px tall and
+// the markers 15px — but wide enough that rotated leaf clusters on the outer
+// branches are not sliced off at the screen edge.
+export const WIDTH = 500;
 export const CENTER = WIDTH / 2;
 
 /** Deterministic hash → [0, 1). Same input, same output, forever. */
@@ -74,7 +75,9 @@ export function branchFor(idx: number, count: number): Branch {
   const flip = noise(idx, 3) < 0.22;
   const side = ((idx % 2 === 0 ? 1 : -1) * (flip ? -1 : 1)) as -1 | 1;
 
-  const length = 78 + noise(idx, 1) * 62;
+  // Kept short enough that a rotated leaf cluster on the end still fits
+  // inside the canvas on a 375px screen.
+  const length = 70 + noise(idx, 1) * 44;
   const rise = 28 + noise(idx, 2) * 46;
 
   return {
