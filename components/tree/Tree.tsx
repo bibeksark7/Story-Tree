@@ -253,6 +253,51 @@ function Clouds({ height }: { height: number }) {
   );
 }
 
+/**
+ * The field the tree stands in.
+ *
+ * Spans the full canvas width so it reads as ground rather than an island,
+ * with a low rise under the trunk and a few tufts along the horizon. Tufts are
+ * hashed from their index, so they never move between renders.
+ */
+function Ground({ height, phase }: { height: number; phase: Phase }) {
+  const top = height - ROOT * 0.62;
+  const rise = 26;
+  const mid = CENTER;
+
+  // A gentle mound under the trunk, flattening out to either side.
+  const edge =
+    `M -20 ${height + 40} ` +
+    `L -20 ${top + rise} ` +
+    `Q ${mid * 0.45} ${top + rise * 0.35} ${mid - 130} ${top + rise * 0.2} ` +
+    `Q ${mid} ${top - rise * 0.75} ${mid + 130} ${top + rise * 0.2} ` +
+    `Q ${WIDTH - mid * 0.45} ${top + rise * 0.35} ${WIDTH + 20} ${top + rise} ` +
+    `L ${WIDTH + 20} ${height + 40} Z`;
+
+  const tufts = Array.from({ length: 14 }, (_, i) => {
+    const x = 12 + (i / 13) * (WIDTH - 24) + (cloudNoise(i, 11) - 0.5) * 22;
+    const dip = Math.abs(x - mid) < 150 ? -rise * 0.5 : rise * 0.25;
+    const y = top + dip + cloudNoise(i, 12) * 14;
+    const hgt = 9 + cloudNoise(i, 13) * 11;
+    return { x, y, hgt };
+  });
+
+  return (
+    <g aria-hidden="true">
+      <path d={edge} fill={phase.grass} />
+      <path d={edge} fill={phase.grassShade} opacity="0.45" transform={`translate(0 ${rise * 1.5})`} />
+      {tufts.map((t, i) => (
+        <path
+          key={i}
+          d={`M ${t.x} ${t.y} q 3 ${-t.hgt * 0.6} 1 ${-t.hgt} q 4 ${t.hgt * 0.55} 5 ${t.hgt}`}
+          fill={phase.grassShade}
+          opacity="0.75"
+        />
+      ))}
+    </g>
+  );
+}
+
 export function Tree({
   count,
   posts,
@@ -300,7 +345,7 @@ export function Tree({
 
       <Clouds height={h} />
 
-      <ellipse cx={CENTER} cy={h} rx={WIDTH * 0.55} ry={ROOT * 0.7} fill={phase.barkShade} opacity="0.32" />
+      <Ground height={h} phase={phase} />
 
       <path d={trunkPath(count, trunkStop)} fill={phase.bark} />
 
