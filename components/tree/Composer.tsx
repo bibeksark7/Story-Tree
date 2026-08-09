@@ -21,16 +21,22 @@ async function downscale(file: File): Promise<Blob> {
   return blob;
 }
 
-/** Typing this instead of a post unlocks the alternate climber. */
-const UNLOCK_WORD = "reve";
+/**
+ * Phrases that change the climber instead of posting. Kept as a map rather
+ * than a special case per word, so adding another skin is one line.
+ */
+const SECRETS: Record<string, "default" | "reve"> = {
+  reve: "reve",
+  "w sponsors": "default",
+};
 
 export function Composer({
   onPosted,
-  onUnlock,
+  onSkin,
   ink,
 }: {
   onPosted: (idx: number, milestone: number | null) => void;
-  onUnlock: () => void;
+  onSkin: (skin: "default" | "reve") => void;
   ink: string;
 }) {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -61,10 +67,12 @@ export function Composer({
   async function postText() {
     if (!text.trim() || busy) return;
 
-    // The easter egg never reaches the tree — it unlocks a skin and clears.
-    if (text.trim().toLowerCase() === UNLOCK_WORD) {
+    // Secret phrases never reach the tree — they change the climber and clear.
+    // Whitespace is normalised so "w  sponsors" still works.
+    const secret = SECRETS[text.trim().toLowerCase().replace(/\s+/g, " ")];
+    if (secret) {
       setText("");
-      onUnlock();
+      onSkin(secret);
       return;
     }
 

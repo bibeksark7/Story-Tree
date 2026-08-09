@@ -37,16 +37,16 @@ export function TreeView({
   const [justAdded, setJustAdded] = useState<number | undefined>();
   const [favOpen, setFavOpen] = useState(false);
   const [calOpen, setCalOpen] = useState(false);
-  const [unlocked, setUnlocked] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
 
   // Per-visitor state lives in the browser — there are no accounts.
   const skin = useSkin();
   const favourites = useFavourites();
 
-  function unlock() {
-    setSkin("reve");
-    setUnlocked(true);
-    setTimeout(() => setUnlocked(false), 3600);
+  function applySkin(next: "default" | "reve") {
+    setSkin(next);
+    setToast(next === "reve" ? "New climber unlocked" : "Original climber restored");
+    setTimeout(() => setToast(null), 3600);
   }
 
   function isFavourite(p: PostSummary) {
@@ -171,16 +171,16 @@ export function TreeView({
         phase={phase}
       />
 
-      {unlocked && (
+      {toast && (
         <div className="pointer-events-none absolute inset-x-0 top-16 z-40 flex justify-center">
           <p className="rounded-full bg-black/70 px-4 py-2 font-label text-[0.6875rem] uppercase tracking-[0.16em] text-amber-200">
-            New climber unlocked
+            {toast}
           </p>
         </div>
       )}
 
       <Composer
-        onUnlock={unlock}
+        onSkin={applySkin}
         onPosted={(idx, milestone) => {
           if (milestone) router.push(`/milestone/${milestone}`);
           else refresh(idx);
