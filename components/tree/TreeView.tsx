@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Tree } from "./Tree";
 import { Composer } from "./Composer";
+import { GroundBack, GroundFront } from "./Ground";
 import type { PostSummary } from "./types";
 import { paletteFor } from "@/lib/tree/palette";
 import { MILESTONE_EVERY, phaseOf } from "@/lib/tree/geometry";
@@ -58,14 +59,22 @@ export function TreeView({
       }
     >
       <div ref={scroller} className="h-full w-full overflow-y-auto overscroll-contain">
-        <Tree
-          count={count}
-          posts={posts}
-          phase={phase}
-          phaseIndex={phaseIndex}
-          onOpen={setOpen}
-          highlightIdx={justAdded}
-        />
+        {/* The ground spans the viewport; the tree canvas is a fixed width and
+            renders centred, so drawing the field inside it left an island. */}
+        <div className="relative w-full">
+          <GroundBack phase={phase} />
+          <div className="relative z-10">
+            <Tree
+              count={count}
+              posts={posts}
+              phase={phase}
+              phaseIndex={phaseIndex}
+              onOpen={setOpen}
+              highlightIdx={justAdded}
+            />
+          </div>
+          <GroundFront phase={phase} />
+        </div>
       </div>
 
       {/* Progress, pinned. The one number that explains the whole product. */}
