@@ -236,8 +236,10 @@ export function Tree({
   const topBranchY = branchY(Math.max(count, 1), count);
   // Low enough that the climber is only just below the foliage.
   const crownY = topBranchY - CROWN * 0.42;
-  // The trunk continues up inside the canopy rather than stopping beneath it.
-  const trunkStop = crownY - 40;
+  // The trunk continues up inside the canopy so the two read as one object,
+  // but stops below the crown's middle — running it higher left the tip
+  // showing through the upper leaves.
+  const trunkStop = crownY + 30;
 
   return (
     <svg
