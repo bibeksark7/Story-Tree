@@ -17,6 +17,7 @@ import type { Phase } from "@/lib/tree/palette";
 import { Climber } from "./Climber";
 import type { PostSummary } from "./types";
 import { ART } from "@/lib/tree/content.generated";
+import { Fruit, FRUITS } from "./Fruit";
 
 /**
  * Where each delivered leaf cluster's stem sits, as a fraction of the image.
@@ -253,6 +254,34 @@ function Clouds({ height }: { height: number }) {
   );
 }
 
+/**
+ * Fruit in the canopy. Placed on an ellipse around the crown's middle so it
+ * lands among the leaves rather than floating off the silhouette, and hashed
+ * from its index so it never moves between renders.
+ */
+function CrownFruit({ cx, cy }: { cx: number; cy: number }) {
+  return (
+    <g aria-hidden="true">
+      {Array.from({ length: 11 }, (_, i) => {
+        const a = cloudNoise(i, 31) * Math.PI * 2;
+        const r = 0.34 + cloudNoise(i, 32) * 0.52;
+        const x = cx + Math.cos(a) * 132 * r;
+        const y = cy + Math.sin(a) * 168 * r - 18;
+        return (
+          <Fruit
+            key={i}
+            x={x}
+            y={y}
+            kind={FRUITS[i % 3]}
+            size={24 + cloudNoise(i, 33) * 8}
+            tilt={(cloudNoise(i, 34) - 0.5) * 34}
+          />
+        );
+      })}
+    </g>
+  );
+}
+
 export function Tree({
   count,
   posts,
@@ -326,6 +355,16 @@ export function Tree({
               <LeafShapes x={b.x1} y={b.y1} variant={b.leaf} leaf={phase.leaf} shade={phase.leafShade} />
             )}
 
+            {cloudNoise(idx, 41) < 0.5 && (
+              <Fruit
+                x={b.x1 + (cloudNoise(idx, 42) - 0.5) * 46}
+                y={b.y1 + 26 + cloudNoise(idx, 43) * 16}
+                kind={FRUITS[idx % 3]}
+                size={23 + cloudNoise(idx, 44) * 7}
+                tilt={(cloudNoise(idx, 45) - 0.5) * 30}
+              />
+            )}
+
             {post && (
               <g
                 className="cursor-pointer"
@@ -366,6 +405,7 @@ export function Tree({
       })}
 
       <Crown cx={trunkX(crownY)} cy={crownY} phase={phase} />
+      <CrownFruit cx={trunkX(crownY)} cy={crownY} />
 
       <Climber x={climber.x} y={climber.y} facing={climber.facing} ink={phase.ink} phase={phaseIndex} />
     </svg>
