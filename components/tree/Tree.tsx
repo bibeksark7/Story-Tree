@@ -214,6 +214,45 @@ function Crown({ cx, cy, phase }: { cx: number; cy: number; phase: Phase }) {
   );
 }
 
+/** Deterministic hash → [0, 1), so clouds never reshuffle between renders. */
+function cloudNoise(n: number, salt = 0): number {
+  let h = Math.imul(n + salt * 0x9e3779b9, 0x85ebca6b);
+  h = Math.imul(h ^ (h >>> 13), 0xc2b2ae35);
+  return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+}
+
+/**
+ * Clouds, drawn into the canvas rather than the fixed backdrop so they scroll
+ * past with the tree — different sky at different heights, instead of the same
+ * two clouds following you all the way up.
+ */
+function Clouds({ height }: { height: number }) {
+  const every = SEGMENT * 1.6;
+  const rows = Math.max(Math.floor(height / every), 1);
+
+  return (
+    <g aria-hidden="true">
+      {Array.from({ length: rows }, (_, i) => {
+        const y = height - i * every - cloudNoise(i, 7) * every * 0.7;
+        // Alternate sides and keep clear of the trunk down the middle.
+        const side = i % 2 === 0 ? 1 : -1;
+        const x = CENTER + side * (108 + cloudNoise(i, 2) * 96);
+        const s = 0.72 + cloudNoise(i, 3) * 0.75;
+        const o = 0.5 + cloudNoise(i, 4) * 0.35;
+
+        return (
+          <g key={i} transform={`translate(${x} ${y}) scale(${s})`} opacity={o}>
+            <ellipse cx="0" cy="0" rx="52" ry="20" fill="#ffffff" />
+            <circle cx="-22" cy="-8" r="20" fill="#ffffff" />
+            <circle cx="6" cy="-16" r="26" fill="#ffffff" />
+            <circle cx="32" cy="-6" r="18" fill="#ffffff" />
+          </g>
+        );
+      })}
+    </g>
+  );
+}
+
 export function Tree({
   count,
   posts,
@@ -258,6 +297,8 @@ export function Tree({
 
       {/* No sky rect: the sky is a fixed background behind this canvas, so it
           stays put while the tree scrolls past it. */}
+
+      <Clouds height={h} />
 
       <ellipse cx={CENTER} cy={h} rx={WIDTH * 0.55} ry={ROOT * 0.7} fill={phase.barkShade} opacity="0.32" />
 

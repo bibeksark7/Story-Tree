@@ -52,7 +52,7 @@ export function trunkX(y: number): number {
 /** Trunk thickness tapers toward the crown. */
 export function trunkWidth(idx: number, count: number): number {
   const fromTop = Math.max(count - idx, 0);
-  return 13 + Math.min(fromTop, 40) * 0.62;
+  return 22 + Math.min(fromTop, 40) * 1.05;
 }
 
 export type Branch = {
