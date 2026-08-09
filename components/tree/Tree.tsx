@@ -99,6 +99,11 @@ function Cluster({
         y={-oy * size}
         width={size}
         height={size}
+        // Canopy blobs are clipped to trim the drawn branch stump off the
+        // corner. The front-most blobs have nothing over them, so a stump
+        // there is simply a log floating in the leaves. Branch-tip clusters
+        // are left unclipped — there the stump is the join to the branch.
+        clipPath={byStem ? undefined : "url(#blob)"}
       />
     </g>
   );
@@ -234,6 +239,12 @@ export function Tree({
       role="img"
       aria-label={`A tree grown from ${count} posts`}
     >
+      <defs>
+        <clipPath id="blob" clipPathUnits="objectBoundingBox">
+          <circle cx="0.5" cy="0.5" r="0.43" />
+        </clipPath>
+      </defs>
+
       {/* No sky rect: the sky is a fixed background behind this canvas, so it
           stays put while the tree scrolls past it. */}
 
