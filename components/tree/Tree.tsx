@@ -43,6 +43,9 @@ function stubAngle(v: number): number {
 
 const CLUSTER = 104;
 
+/** Radius of the canopy clip, as a fraction of the drawn image. */
+const CLIP_R = 0.27;
+
 /** The trunk, from the ground up to where the canopy takes over. */
 function trunkPath(count: number, stopY: number): string {
   const h = treeHeight(count);
@@ -91,14 +94,20 @@ function Cluster({
   const oy = byStem ? ay : 0.5;
   const rotate = byStem ? angle - stubAngle(v) : angle;
 
+  // Canopy blobs show only the dense middle of the bush. The drawn stump runs
+  // inward to roughly a third of the way from the centre, so a gentle trim
+  // left most of it on screen — the image is drawn oversized and clipped well
+  // inside that instead. `size` stays the visible diameter either way.
+  const draw = byStem ? size : size / (2 * CLIP_R);
+
   return (
     <g transform={`translate(${x} ${y}) rotate(${rotate})`} aria-hidden="true">
       <image
         href={`/tree/leaf-${v}.png`}
-        x={-ox * size}
-        y={-oy * size}
-        width={size}
-        height={size}
+        x={-ox * draw}
+        y={-oy * draw}
+        width={draw}
+        height={draw}
         // Canopy blobs are clipped to trim the drawn branch stump off the
         // corner. The front-most blobs have nothing over them, so a stump
         // there is simply a log floating in the leaves. Branch-tip clusters
@@ -241,7 +250,7 @@ export function Tree({
     >
       <defs>
         <clipPath id="blob" clipPathUnits="objectBoundingBox">
-          <circle cx="0.5" cy="0.5" r="0.43" />
+          <circle cx="0.5" cy="0.5" r="0.27" />
         </clipPath>
       </defs>
 
