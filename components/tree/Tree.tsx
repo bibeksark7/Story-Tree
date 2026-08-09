@@ -15,6 +15,7 @@ import {
 import type { Phase } from "@/lib/tree/palette";
 import { Climber } from "./Climber";
 import type { PostSummary } from "./types";
+import { ART } from "@/lib/tree/content.generated";
 
 /** The trunk as one continuous path, so it never shows a seam between posts. */
 function trunkPath(count: number): string {
@@ -36,6 +37,17 @@ function trunkPath(count: number): string {
 function Leaves({ x, y, variant, leaf, shade }: {
   x: number; y: number; variant: number; leaf: string; shade: string;
 }) {
+  // Reve leaf art is drawn neutral green and tinted per phase here, so one set
+  // of files serves every season.
+  if (ART.leaf[variant % 3]) {
+    const s = 92;
+    return (
+      <g transform={`translate(${x} ${y})`} aria-hidden="true">
+        <image href={`/tree/leaf-${variant % 3}.png`} x={-s / 2} y={-s / 2} width={s} height={s} />
+      </g>
+    );
+  }
+
   const blobs = [
     [[0, 0, 26], [20, -10, 19], [-19, -8, 17]],
     [[0, -4, 23], [17, 8, 16], [-16, 6, 18]],
@@ -55,12 +67,14 @@ export function Tree({
   count,
   posts,
   phase,
+  phaseIndex,
   onOpen,
   highlightIdx,
 }: {
   count: number;
   posts: PostSummary[];
   phase: Phase;
+  phaseIndex: number;
   onOpen: (post: PostSummary) => void;
   highlightIdx?: number;
 }) {
@@ -148,7 +162,7 @@ export function Tree({
         );
       })}
 
-      <Climber x={climber.x} y={climber.y} facing={climber.facing} ink={phase.ink} />
+      <Climber x={climber.x} y={climber.y} facing={climber.facing} ink={phase.ink} phase={phaseIndex} />
     </svg>
   );
 }

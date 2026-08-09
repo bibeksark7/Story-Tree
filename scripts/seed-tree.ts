@@ -6,6 +6,7 @@
 //
 // Also creates the storage bucket photos are uploaded to, if it is missing.
 import { createClient } from "@supabase/supabase-js";
+import { COPY } from "@/lib/tree/content.generated";
 
 const db = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -13,28 +14,9 @@ const db = createClient(
   { auth: { persistSession: false, autoRefreshToken: false } },
 );
 
-const NOTES = [
-  "made it through today",
-  "coffee with mom, first time in months",
-  "the bus was late again but the sky was doing something",
-  "finished the thing I have been putting off since March",
-  "my sister called for no reason",
-  "found my old headphones behind the desk",
-  "it rained the whole walk home and I did not mind",
-  "someone held the door and said my name",
-  "cooked properly instead of ordering",
-  "slept eight hours",
-  "the cat sat on the keyboard again",
-  "handed in the application",
-  "walked past the old flat and felt nothing, which is progress",
-  "first run in a year, three kilometres, terrible time",
-  "we fixed it at 2am and it worked",
-  "bought flowers for no occasion",
-  "read a whole chapter without checking my phone",
-  "told her the truth",
-  "the tomatoes finally came up",
-  "quiet day, nothing happened, that was the good part",
-];
+// The seed notes are partner-owned copy, compiled from content/tree-copy.md
+// by scripts/build-content.ts (run automatically via preseed-tree).
+const NOTES = COPY.seedPosts;
 
 async function ensureBucket() {
   const { data } = await db.storage.listBuckets();

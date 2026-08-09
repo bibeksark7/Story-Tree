@@ -46,3 +46,6 @@ lib/ai/world.generated.ts
 # probe harness
 .probe-latency.json
 /fixtures
+
+# generated from content/tree-copy.md + public/tree by scripts/build-content.ts
+lib/tree/content.generated.ts

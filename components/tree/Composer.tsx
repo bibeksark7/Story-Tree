@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { COPY } from "@/lib/tree/content.generated";
 
 const MAX_EDGE = 1280;
 const QUALITY = 0.82;
@@ -111,7 +112,7 @@ export function Composer({
           }}
           disabled={busy}
           maxLength={280}
-          placeholder={busy ? "Growing the tree…" : "Leave something on the tree"}
+          placeholder={busy ? COPY.posting : COPY.composerPlaceholder}
           className="min-w-0 flex-1 bg-transparent px-1 text-[1rem] text-neutral-900 outline-none placeholder:text-neutral-500"
         />
 
@@ -122,7 +123,7 @@ export function Composer({
           className="h-10 shrink-0 rounded-full px-4 font-label text-[0.75rem] uppercase tracking-[0.14em] text-white disabled:opacity-35"
           style={{ background: ink }}
         >
-          Post
+          {COPY.composerButton}
         </button>
       </div>
     </div>

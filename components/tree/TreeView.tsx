@@ -8,6 +8,7 @@ import { Composer } from "./Composer";
 import type { PostSummary } from "./types";
 import { paletteFor } from "@/lib/tree/palette";
 import { MILESTONE_EVERY, phaseOf } from "@/lib/tree/geometry";
+import { COPY } from "@/lib/tree/content.generated";
 
 export function TreeView({
   initialCount,
@@ -23,7 +24,9 @@ export function TreeView({
   const [open, setOpen] = useState<PostSummary | null>(null);
   const [justAdded, setJustAdded] = useState<number | undefined>();
 
-  const phase = paletteFor(phaseOf(count));
+  const phaseIndex = phaseOf(count);
+  const phase = paletteFor(phaseIndex);
+  const phaseName = COPY.phaseNames[phaseIndex % COPY.phaseNames.length];
   const toMilestone = MILESTONE_EVERY - (count % MILESTONE_EVERY);
 
   // Start at the top: the climber is the point, and history is below him.
@@ -47,6 +50,7 @@ export function TreeView({
           count={count}
           posts={posts}
           phase={phase}
+          phaseIndex={phaseIndex}
           onOpen={setOpen}
           highlightIdx={justAdded}
         />
@@ -58,7 +62,7 @@ export function TreeView({
         style={{ color: phase.ink }}
       >
         <span className="font-label text-[0.6875rem] uppercase tracking-[0.16em] opacity-80">
-          {count} {count === 1 ? "post" : "posts"} · {phase.name}
+          {count} {count === 1 ? "post" : "posts"} · {phaseName}
         </span>
         <span className="font-label text-[0.6875rem] uppercase tracking-[0.16em] opacity-60">
           {toMilestone} to the next milestone

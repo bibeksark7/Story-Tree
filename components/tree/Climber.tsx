@@ -1,10 +1,11 @@
 /**
  * The climber.
  *
- * Placeholder art until Reve delivers. Swapping is a one-line change: drop the
- * PNG in public/tree/climber-{phase}.png and render an <image> here instead of
- * the shapes. Everything else — position, facing, scale — stays.
+ * Renders public/tree/climber-{phase}.png the moment that file exists, and
+ * falls back to shapes drawn here when it does not — so artwork goes live on
+ * the next deploy with no code change and no handoff.
  */
+import { ART } from "@/lib/tree/content.generated";
 /** He is the emotional core, so he is drawn well above incidental size. */
 const SCALE = 1.7;
 
@@ -13,12 +14,27 @@ export function Climber({
   y,
   facing,
   ink,
+  phase,
 }: {
   x: number;
   y: number;
   facing: -1 | 1;
   ink: string;
+  phase: number;
 }) {
+  const slot = phase % 4;
+
+  if (ART.climber[slot]) {
+    // Drawn from the feet up, so he stands on the branch rather than through it.
+    const w = 96;
+    const h = 120;
+    return (
+      <g transform={`translate(${x} ${y}) scale(${facing} 1)`} aria-hidden="true">
+        <image href={`/tree/climber-${slot}.png`} x={-w / 2} y={-h + 22} width={w} height={h} />
+      </g>
+    );
+  }
+
   return (
     <g transform={`translate(${x} ${y}) scale(${facing * SCALE} ${SCALE})`} aria-hidden="true">
       {/* back arm, reaching up */}

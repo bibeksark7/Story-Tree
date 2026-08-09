@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Phase } from "@/lib/tree/palette";
 import type { PostSummary } from "./types";
+import { COPY } from "@/lib/tree/content.generated";
 
 /**
  * The payoff.
@@ -80,17 +81,17 @@ export function MilestoneReel({
           style={{ opacity: shown ? 1 : 0, transitionDelay: "420ms" }}
         >
           <p className="font-label text-[0.6875rem] uppercase tracking-[0.2em] text-white/70">
-            Milestone
+            {COPY.milestoneHeading}
           </p>
           <p className="mt-2 text-4xl text-white">{milestone} posts</p>
           <p className="mx-auto mt-3 max-w-xs text-[1rem] leading-relaxed text-white/90">
-            He has climbed this far because {posts.length} of you left something behind.
+            {COPY.milestoneMessage.replace("{count}", String(posts.length))}
           </p>
           <Link
             href="/"
             className="mt-5 inline-block rounded-full bg-white px-6 py-2.5 font-label text-[0.75rem] uppercase tracking-[0.14em] text-neutral-900"
           >
-            Keep climbing
+            {COPY.milestoneButton}
           </Link>
         </div>
       </div>

@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "tsx scripts/build-world.ts",
+    "predev": "tsx scripts/build-world.ts && tsx scripts/build-content.ts",
     "dev": "next dev",
-    "prebuild": "tsx scripts/build-world.ts",
+    "prebuild": "tsx scripts/build-world.ts && tsx scripts/build-content.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -15,7 +15,8 @@
     "hide": "tsx --env-file=.env.local scripts/hide.ts",
     "populate": "tsx --env-file=.env.local scripts/populate.ts",
     "typecheck": "tsc --noEmit",
-    "seed-tree": "tsx --env-file=.env.local scripts/seed-tree.ts"
+    "seed-tree": "tsx --env-file=.env.local scripts/seed-tree.ts",
+    "preseed-tree": "tsx scripts/build-content.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.116.0",
